@@ -3,7 +3,7 @@
 const admin = require('firebase-admin');
 
 exports.handler = (data, context) => {
-    if (!context.auth) {
+    /*if (!context.auth) {
         return {
             status: 'error', 
             code: 401, 
@@ -17,5 +17,10 @@ exports.handler = (data, context) => {
 
         //     resolve(user)
         //   })
+    }*/
+
+    console.log(data.text)
+    return {
+        olar: "text"
     }
 };
