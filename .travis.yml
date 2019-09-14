@@ -1,0 +1,15 @@
+language: node_js
+node_js:
+  - stable
+cache:
+  directories:
+  - node_modules
+before_install: 
+  - cd project
+script:
+  - npm run lint
+deploy:
+  provider: firebase
+  skip_cleanup: true
+  token:
+    secure: U913Er0OnWwM4qOZnMcAuYQxg3HczeOhzCt5326zyU5OXUtE3D/JTML8m8aLFEZKh05TG0k5MBtCTTq+09LwpRvyMWQNIpsJJFIoaUMlFS2dUV8+qU2UiIzz3A2MPp45fxvAmU18CG+NJvFfyUmOfhF9V1lmF8ZA+GglGtupU3wma6FPk/r3HTk8JeRkm5+NwwjlC0DkKogyrpHdOHgiIwNqbZzdVm5yuNc4feWeBWgZjFTamdOXLBHTjJTsg2x6nQ7JY710YYbN/FoY+Q2aRVQ6hP2H4HnlXCMae6ACzccyBN0TnnWXn1duxe9OyPdEOBzszHBdS67SHl0zRxheQDDrs770U6aXm436YKsF5tG/5URvioPE3H+Ds/ciEylE+Mojvazou1vtj5eK98tx+kgBkxPIocrcCHGKtsMK54rg0VLm/0exf3Etdhuhz6xG6cdTVvi/CgTGehXShrv0TnigiVEERVnH8+Rkdr0RWy/wsp9aJ4LH4gYYOgyM/NTNjAMEH+0yJJDwUQE+/NKxLRwm/rHhGWWlpAN6EvJyFh6d1YWYtZX/HucV+jCumSkCsBrY8RBjntkflRU6qBHZfP8JGcv6A0VHYexBEWAxkXQxFVZ5q1INgqA4tbtVYhkiriqD6+bBDBKCfpKmUNZT6G3MIb6GnwhcMJqhmdWSI1Y=
