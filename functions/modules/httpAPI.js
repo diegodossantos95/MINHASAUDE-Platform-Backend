@@ -30,8 +30,8 @@ const authenticate = async (req, res, next) => {
 app.use(cors);
 app.use(cookieParser);
 app.use(authenticate);
-app.get('/hello', (req, res) => {
-    res.send(`Hello ${req.user.name}`);
+app.get('/', (req, res) => {
+    res.send(`Hello ${req.user.email}`);
 });
 
 exports.handler = app;
