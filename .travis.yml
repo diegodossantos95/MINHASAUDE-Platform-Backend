@@ -7,7 +7,7 @@ cache:
 before_install: 
   - cd functions
 before_deploy:
-  - cd functions
+  - cd TRAVIS_BUILD_DIR/functions
 script:
   - npm run lint
 deploy:
