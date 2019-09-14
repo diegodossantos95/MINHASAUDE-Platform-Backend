@@ -5,7 +5,7 @@ cache:
   directories:
   - node_modules
 before_install: 
-  - cd project
+  - cd functions
 script:
   - npm run lint
 deploy:
