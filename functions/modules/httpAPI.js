@@ -5,6 +5,7 @@ const express = require('express');
 const cookieParser = require('cookie-parser')();
 const cors = require('cors')({origin: true});
 const app = express();
+const physicianDataManager = require('./physicianDataManager');
 
 const authenticate = async (req, res, next) => {
     if (!req.headers.authorization || !req.headers.authorization.startsWith('Bearer ')) {
@@ -30,8 +31,10 @@ const authenticate = async (req, res, next) => {
 app.use(cors);
 app.use(cookieParser);
 app.use(authenticate);
-app.get('/', (req, res) => {
-    res.send(`Hello ${req.user.email}`);
+app.get('/patients', (req, res) => {
+    const myUser = req.user.email;
+
+    physicianDataManager.readData(myUser);
 });
 
 exports.handler = app;
