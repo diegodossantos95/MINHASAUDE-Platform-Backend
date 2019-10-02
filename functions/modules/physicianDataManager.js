@@ -2,9 +2,10 @@
 
 const admin = require('firebase-admin');
 const db = admin.firestore();
+const physicianCollectionName = "physicians";
 
 const readData = sName => {
-    return db.collection("physicians").doc(sName).get().then(doc => {
+    return db.collection(physicianCollectionName).doc(sName).get().then(doc => {
         if (doc.exists) {
             return Promise.resolve(doc);
         } else {            
@@ -14,7 +15,7 @@ const readData = sName => {
 };
 
 const createFirstTimeData = sName => {
-    return db.collection("physicians").doc(sName).set({
+    return db.collection(physicianCollectionName).doc(sName).set({
         sharings: []
     });
 };

@@ -34,7 +34,12 @@ app.use(authenticate);
 app.get('/patients', (req, res) => {
     const myUser = req.user.email;
 
-    physicianDataManager.readData(myUser);
+    physicianDataManager.readData(myUser)
+    .then( data => {
+        res.json(data);
+    }, error => {
+        res.status(500).json(error);
+    });
 });
 
 exports.handler = app;
