@@ -6,6 +6,7 @@ const cookieParser = require('cookie-parser')();
 const cors = require('cors')({origin: true});
 const app = express();
 const physicianDataManager = require('./physicianDataManager');
+const patientDataManager = require('./patientDataManager');
 
 const authenticate = async (req, res, next) => {
     if (!req.headers.authorization || !req.headers.authorization.startsWith('Bearer ')) {
@@ -31,10 +32,26 @@ const authenticate = async (req, res, next) => {
 app.use(cors);
 app.use(cookieParser);
 app.use(authenticate);
-app.get('/patients', (req, res) => {
+
+// View my sharings
+app.get('/mySharings', (req, res) => {
     const myUser = req.user.email;
 
-    physicianDataManager.readData(myUser)
+    physicianDataManager.readSharings(myUser)
+    .then( data => {
+        res.json(data);
+    }, error => {
+        res.status(500).json(error);
+    });
+});
+
+// View patient data
+app.get('/patient/:patientId', (req, res) => {
+    const patientId = req.params.patientId;
+    // Validate if  is shared with me
+    // const myUser = req.user.email;
+
+    patientDataManager.readData(patientId)
     .then( data => {
         res.json(data);
     }, error => {
