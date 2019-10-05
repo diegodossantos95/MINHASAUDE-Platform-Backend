@@ -8,7 +8,8 @@ const admin = require('firebase-admin');
 admin.initializeApp();
 
 const physicianAPI = require('./modules/physicianAPI');
-const uploadHealthData = require('./modules/uploadHealthData');
+const patientAPI = require('./modules/patientAPI');
 
 exports.physicianAPI = functions.https.onRequest(physicianAPI.handler);
-exports.uploadHealthData = functions.https.onCall(uploadHealthData.handler);
+exports.uploadHealthData = functions.https.onCall(patientAPI.uploadHealthData);
+exports.readSharings = functions.https.onCall(patientAPI.readSharings);
