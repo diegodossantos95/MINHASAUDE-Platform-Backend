@@ -5,9 +5,9 @@ const express = require('express');
 const cookieParser = require('cookie-parser')();
 const cors = require('cors')({origin: true});
 const app = express();
-const physicianDataManager = require('./physicianDataManager');
-const patientDataManager = require('./patientDataManager');
-const authManager = require('./authenticationManager');
+const physicianDataManager = require('./managers/physicianDataManager');
+const patientDataManager = require('./managers/patientDataManager');
+const authManager = require('./managers/authenticationManager');
 
 app.use(cors);
 app.use(cookieParser);
