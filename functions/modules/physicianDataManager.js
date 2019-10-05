@@ -6,21 +6,23 @@ const physicianCollectionName = "physicians";
 const sharingCollectionName = "sharings";
 
 const readSharings = sName => {
-    return db.collection(physicianCollectionName).doc(sName).get().then(doc => {
-        if (doc.exists) {
-            return Promise.resolve(doc[sharingCollectionName]);
-        } else {            
-            return createFirstTimeData(sName).then(oData => {
-                return oData[sharingCollectionName];
+    //TODO: Handle if the document doesnt exist
+    
+    return db
+        .collection(physicianCollectionName)
+        .doc(sName)
+        .collection(sharingCollectionName)
+        .get()
+        .then(querySnapshot => {
+            const docs = querySnapshot.docs.map(document => {
+                return document.data();
             });
-        }
-    });
+
+            return Promise.resolve(docs);
+        })
+        .catch(error => {
+            return Promise.reject(error);
+        });
 };
 
-const createFirstTimeData = sName => {
-    var physicianObject = {};
-    physicianObject[sharingCollectionName] = [];
-
-    return db.collection(physicianCollectionName).doc(sName).set(physicianObject);
-};
 exports.readSharings = readSharings;

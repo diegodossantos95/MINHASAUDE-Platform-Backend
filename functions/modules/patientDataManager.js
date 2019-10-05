@@ -3,16 +3,26 @@
 const admin = require('firebase-admin');
 const db = admin.firestore();
 const patientCollectionName = "patients";
+const healthDataCollectionName = "data";
 
 const readData = sName => {
-    return db.collection(patientCollectionName).doc(sName).get().then(doc => {
-        if (doc.exists) {
-            const healthData = doc.data;
-            return Promise.resolve(healthData);
-        } else {            
-            return Promise.reject("Invalid Patient");
-        }
-    });
+    //TODO: Handle if the document doesnt exist
+    
+    return db
+        .collection(patientCollectionName)
+        .doc(sName)
+        .collection(healthDataCollectionName)
+        .get()
+        .then(querySnapshot => {
+            const docs = querySnapshot.docs.map(document => {
+                return document.data();
+            });
+
+            return Promise.resolve(docs);
+        })
+        .catch(error => {
+            return Promise.reject(error);
+        });
 };
 
 exports.readData = readData;

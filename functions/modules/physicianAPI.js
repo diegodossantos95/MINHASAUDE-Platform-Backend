@@ -7,56 +7,35 @@ const cors = require('cors')({origin: true});
 const app = express();
 const physicianDataManager = require('./physicianDataManager');
 const patientDataManager = require('./patientDataManager');
-
-const authenticate = async (req, res, next) => {
-    if (!req.headers.authorization || !req.headers.authorization.startsWith('Bearer ')) {
-        console.error("Request without the authorization headers.");
-        res.status(403).send('Unauthorized');
-        return;
-    }
-    
-    const idToken = req.headers.authorization.split('Bearer ')[1];
-    try {
-        console.debug("User logged successfully.");
-        const decodedIdToken = await admin.auth().verifyIdToken(idToken);
-        req.user = decodedIdToken;
-        next();
-        return;
-    } catch(e) {
-        console.error(`Error: ${e}`);
-        res.status(403).send('Unauthorized');
-        return;
-    }
-};
+const authManager = require('./authenticationManager');
 
 app.use(cors);
 app.use(cookieParser);
-app.use(authenticate);
+app.use(authManager.check);
 
 // View my sharings
 app.get('/mySharings', (req, res) => {
     const myUser = req.user.email;
 
     physicianDataManager.readSharings(myUser)
-    .then( data => {
-        res.json(data);
-    }, error => {
-        res.status(500).json(error);
-    });
+        .then( data => {
+            res.json(data);
+        }, error => {
+            res.status(500).send(error);
+        });
 });
 
 // View patient data
 app.get('/patient/:patientId', (req, res) => {
     const patientId = req.params.patientId;
-    // Validate if  is shared with me
-    // const myUser = req.user.email;
+    //TODO: Validate if  is shared with me
 
     patientDataManager.readData(patientId)
-    .then( data => {
-        res.json(data);
-    }, error => {
-        res.status(500).json(error);
-    });
+        .then( data => {
+            res.json(data);
+        }, error => {
+            res.status(500).send(error);
+        });
 });
 
 exports.handler = app;
