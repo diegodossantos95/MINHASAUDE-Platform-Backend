@@ -12,3 +12,4 @@ const patientAPI = require('./modules/patientAPI');
 
 exports.physicianAPI = functions.https.onRequest(physicianAPI.handler);
 exports.getSharings = functions.https.onCall(patientAPI.getSharings);
+exports.deleteSharing = functions.https.onCall(patientAPI.deleteSharing);

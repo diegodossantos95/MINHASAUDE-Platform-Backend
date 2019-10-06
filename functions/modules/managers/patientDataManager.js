@@ -46,5 +46,21 @@ const getSharings = sName => {
         });
 };
 
+const deleteSharing = (sPatientName, sSharingName) => {
+    return db
+        .collection(patientCollectionName)
+        .doc(sPatientName)
+        .collection(sharingCollectionName)
+        .doc(sSharingName)
+        .delete()
+        .then(() => {
+            return Promise.resolve();
+        })
+        .catch(error => {
+            return Promise.reject(error);
+        });
+};
+
 exports.getPatientData = getPatientData;
 exports.getSharings = getSharings;
+exports.deleteSharing = deleteSharing;
