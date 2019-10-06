@@ -17,7 +17,7 @@ app.use(authManager.check);
 app.get('/mySharings', (req, res) => {
     const myUser = req.user.email;
 
-    physicianDataManager.readSharings(myUser)
+    physicianDataManager.getSharings(myUser)
         .then( data => {
             res.json(data);
         }, error => {
@@ -30,7 +30,7 @@ app.get('/patient/:patientId', (req, res) => {
     const patientId = req.params.patientId;
     //TODO: Validate if  is shared with me
 
-    patientDataManager.readData(patientId)
+    patientDataManager.getPatientData(patientId)
         .then( data => {
             res.json(data);
         }, error => {

@@ -6,7 +6,7 @@ const patientCollectionName = "patients";
 const healthDataCollectionName = "data";
 const sharingCollectionName = "sharings";
 
-const readData = sName => {
+const getPatientData = sName => {
     //TODO: Handle if the document doesnt exist
     
     return db
@@ -26,7 +26,7 @@ const readData = sName => {
         });
 };
 
-const readSharings = sName => {
+const getSharings = sName => {
     //TODO: Handle if the document doesnt exist
 
     return db
@@ -46,5 +46,5 @@ const readSharings = sName => {
         });
 };
 
-exports.readData = readData;
-exports.readSharings = readSharings;
+exports.getPatientData = getPatientData;
+exports.getSharings = getSharings;

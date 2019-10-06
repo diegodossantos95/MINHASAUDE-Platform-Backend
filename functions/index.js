@@ -11,5 +11,4 @@ const physicianAPI = require('./modules/physicianAPI');
 const patientAPI = require('./modules/patientAPI');
 
 exports.physicianAPI = functions.https.onRequest(physicianAPI.handler);
-exports.uploadHealthData = functions.https.onCall(patientAPI.uploadHealthData);
-exports.readSharings = functions.https.onCall(patientAPI.readSharings);
+exports.getSharings = functions.https.onCall(patientAPI.getSharings);

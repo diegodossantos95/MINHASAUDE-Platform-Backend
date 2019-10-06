@@ -5,7 +5,7 @@ const db = admin.firestore();
 const physicianCollectionName = "physicians";
 const sharingCollectionName = "sharings";
 
-const readSharings = sName => {
+const getSharings = sName => {
     //TODO: Handle if the document doesnt exist
     
     return db
@@ -25,4 +25,4 @@ const readSharings = sName => {
         });
 };
 
-exports.readSharings = readSharings;
+exports.getSharings = getSharings;
