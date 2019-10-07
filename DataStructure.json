@@ -1,0 +1,18 @@
+{
+    "patients-collection":
+        [
+            {
+                "patient1-document": {
+
+                }
+            }
+        ],
+    "physicians-collection":
+        [
+            {
+                "physician1-document": {
+
+                }
+            }
+        ]   
+}
