@@ -10,6 +10,9 @@ admin.initializeApp();
 const physicianAPI = require('./modules/physicianAPI');
 const patientAPI = require('./modules/patientAPI');
 
+// PhysicianAPI
 exports.physicianAPI = functions.https.onRequest(physicianAPI.handler);
+
+// PatientAPI
 exports.getSharings = functions.https.onCall(patientAPI.getSharings);
 exports.deleteSharing = functions.https.onCall(patientAPI.deleteSharing);

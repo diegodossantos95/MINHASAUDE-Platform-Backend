@@ -46,12 +46,12 @@ const getSharings = sName => {
         });
 };
 
-const deleteSharing = (sPatientName, sSharingName) => {
+const deleteSharing = (sPatientName, sSharingId) => {
     return db
         .collection(patientCollectionName)
         .doc(sPatientName)
         .collection(sharingCollectionName)
-        .doc(sSharingName)
+        .doc(sSharingId)
         .delete()
         .then(() => {
             return Promise.resolve();

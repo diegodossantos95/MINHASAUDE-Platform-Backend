@@ -13,7 +13,7 @@ exports.getSharings = (data, context) => {
 //Delete sharing
 exports.deleteSharing = (data, context) => {
     const myUser = context.auth.token.email;
-    const sharingId = "dsadsad";
+    const sharingId = data.sharingId;
 
     return patientDataManager.deleteSharing(myUser, sharingId);
 };
