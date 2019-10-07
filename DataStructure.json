@@ -3,7 +3,13 @@
         [
             {
                 "patient1-document": {
-
+                    "expiration": "Date",
+                    "healthData": {
+                        "heartRate": []
+                    },
+                    "sharings": [
+                        "physician1-document"
+                    ]
                 }
             }
         ],
@@ -11,7 +17,9 @@
         [
             {
                 "physician1-document": {
-
+                    "sharings": [
+                        "patient1-document"
+                    ]
                 }
             }
         ]   
