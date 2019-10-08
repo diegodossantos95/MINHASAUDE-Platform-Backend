@@ -1,6 +1,5 @@
 'use strict';
 
-const admin = require('firebase-admin');
 const patientDataManager = require('./managers/patientDataManager');
 
 //Read patient sharings
@@ -16,4 +15,20 @@ exports.deleteSharing = (data, context) => {
     const sharingId = data.sharingId;
 
     return patientDataManager.deleteSharing(myUser, sharingId);
+};
+
+//Add new share
+exports.addSharing = (data, context) => {
+    const myUser = context.auth.token.email;
+    const sharingId = data.sharingId;
+
+    return patientDataManager.addSharing(myUser, sharingId);
+};
+
+//Update expiration
+exports.updateExpiration = (data, context) => {
+    const myUser = context.auth.token.email;
+    const expirationTime = data.expiration;
+
+    return patientDataManager.updateExpiration(myUser, expirationTime);
 };

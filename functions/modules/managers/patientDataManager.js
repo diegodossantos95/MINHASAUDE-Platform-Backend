@@ -3,8 +3,8 @@
 const admin = require('firebase-admin');
 const db = admin.firestore();
 const patientCollectionName = "patients";
-const healthDataCollectionName = "data";
-const sharingCollectionName = "sharings";
+const sharingPropertyName = "sharings";
+const healthDataPropertyName = "healthData";
 
 const getPatientData = sName => {
     //TODO: Handle if the document doesnt exist
@@ -12,12 +12,9 @@ const getPatientData = sName => {
     return db
         .collection(patientCollectionName)
         .doc(sName)
-        .collection(healthDataCollectionName)
         .get()
-        .then(querySnapshot => {
-            const docs = querySnapshot.docs.map(document => {
-                return document.data();
-            });
+        .then(docSnapshot => {
+            const docs = docSnapshot.get(healthDataPropertyName);
 
             return Promise.resolve(docs);
         })
@@ -32,14 +29,11 @@ const getSharings = sName => {
     return db
         .collection(patientCollectionName)
         .doc(sName)
-        .collection(sharingCollectionName)
         .get()
-        .then(querySnapshot => {
-            const docs = querySnapshot.docs.map(document => {
-                return document.data();
-            });
+        .then(docSnapshot => {
+            const sharings = docSnapshot.get(sharingPropertyName);
 
-            return Promise.resolve(docs);
+            return Promise.resolve(sharings);
         })
         .catch(error => {
             return Promise.reject(error);
@@ -50,9 +44,39 @@ const deleteSharing = (sPatientName, sSharingId) => {
     return db
         .collection(patientCollectionName)
         .doc(sPatientName)
-        .collection(sharingCollectionName)
-        .doc(sSharingId)
-        .delete()
+        .update({
+            sharings: admin.firestore.FieldValue.arrayRemove(sSharingId)
+        })
+        .then(() => {
+            return Promise.resolve();
+        })
+        .catch(error => {
+            return Promise.reject(error);
+        });
+};
+
+const addSharing = (sPatientName, sSharingId) => {
+    return db
+        .collection(patientCollectionName)
+        .doc(sPatientName)
+        .update({
+            sharings: admin.firestore.FieldValue.arrayUnion(sSharingId)
+        })
+        .then(() => {
+            return Promise.resolve();
+        })
+        .catch(error => {
+            return Promise.reject(error);
+        });
+};
+
+const updateExpiration = (sPatientName, iMillis) => {
+    return db
+        .collection(patientCollectionName)
+        .doc(sPatientName)
+        .update({
+            expiration: admin.firestore.Timestamp.fromMillis(iMillis)
+        })
         .then(() => {
             return Promise.resolve();
         })
@@ -64,3 +88,5 @@ const deleteSharing = (sPatientName, sSharingId) => {
 exports.getPatientData = getPatientData;
 exports.getSharings = getSharings;
 exports.deleteSharing = deleteSharing;
+exports.addSharing = addSharing;
+exports.updateExpiration = updateExpiration;
