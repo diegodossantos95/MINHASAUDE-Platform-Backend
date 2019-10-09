@@ -32,3 +32,11 @@ exports.updateExpiration = (data, context) => {
 
     return patientDataManager.updateExpiration(myUser, expirationTime);
 };
+
+//Update health data
+exports.updateHealthData = (data, context) => {
+    const myUser = context.auth.token.email;
+    const healthData = data.healthData;
+
+    return patientDataManager.updateHealthData(myUser, healthData);
+};

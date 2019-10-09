@@ -85,8 +85,24 @@ const updateExpiration = (sPatientName, iMillis) => {
         });
 };
 
+const updateHealthData = (sPatientName, oHealthData) => {
+    return db
+        .collection(patientCollectionName)
+        .doc(sPatientName)
+        .update({
+            healthData: oHealthData
+        })
+        .then(() => {
+            return Promise.resolve();
+        })
+        .catch(error => {
+            return Promise.reject(error);
+        });
+};
+
 exports.getPatientData = getPatientData;
 exports.getSharings = getSharings;
 exports.deleteSharing = deleteSharing;
 exports.addSharing = addSharing;
 exports.updateExpiration = updateExpiration;
+exports.updateHealthData = updateHealthData;
