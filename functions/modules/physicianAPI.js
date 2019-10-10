@@ -20,7 +20,9 @@ app.get('/mySharings', (req, res) => {
     physicianDataManager.getSharings(myUser)
         .then( data => {
             res.json(data);
-        }, error => {
+            return;
+        })
+        .catch( error => {
             res.status(500).send(error);
         });
 });
@@ -33,7 +35,9 @@ app.get('/patient/:patientId', (req, res) => {
     patientDataManager.getPatientData(patientId)
         .then( data => {
             res.json(data);
-        }, error => {
+            return;
+        })
+        .catch( error => {
             res.status(500).send(error);
         });
 });

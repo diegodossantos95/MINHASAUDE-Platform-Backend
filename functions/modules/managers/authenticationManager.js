@@ -1,5 +1,7 @@
 'use strict';
 
+const admin = require('firebase-admin');
+
 const check = async (req, res, next) => {
     if (!req.headers.authorization || !req.headers.authorization.startsWith('Bearer ')) {
         console.error("Request without the authorization headers.");
