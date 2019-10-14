@@ -9,6 +9,8 @@ const healthDataPropertyName = "healthData";
 const getPatientData = sName => {
     //TODO: Handle if the document doesnt exist
     
+    deleteHealthDataIfExpired(sName);
+
     return db
         .collection(patientCollectionName)
         .doc(sName)
@@ -26,6 +28,8 @@ const getPatientData = sName => {
 const getSharings = sName => {
     //TODO: Handle if the document doesnt exist
 
+    deleteHealthDataIfExpired(sName);
+
     return db
         .collection(patientCollectionName)
         .doc(sName)
@@ -41,6 +45,8 @@ const getSharings = sName => {
 };
 
 const deleteSharing = (sPatientName, sSharingId) => {
+    deleteHealthDataIfExpired(sName);
+
     return db
         .collection(patientCollectionName)
         .doc(sPatientName)
@@ -56,6 +62,8 @@ const deleteSharing = (sPatientName, sSharingId) => {
 };
 
 const addSharing = (sPatientName, sSharingId) => {
+    deleteHealthDataIfExpired(sName);
+
     return db
         .collection(patientCollectionName)
         .doc(sPatientName)
@@ -71,6 +79,8 @@ const addSharing = (sPatientName, sSharingId) => {
 };
 
 const updateExpiration = (sPatientName, iMillis) => {
+    deleteHealthDataIfExpired(sName);
+
     return db
         .collection(patientCollectionName)
         .doc(sPatientName)
@@ -86,6 +96,8 @@ const updateExpiration = (sPatientName, iMillis) => {
 };
 
 const updateHealthData = (sPatientName, oHealthData) => {
+    deleteHealthDataIfExpired(sName);
+
     return db
         .collection(patientCollectionName)
         .doc(sPatientName)
@@ -99,6 +111,33 @@ const updateHealthData = (sPatientName, oHealthData) => {
             return Promise.reject(error);
         });
 };
+
+const deleteHealthDataIfExpired = (sPatientName) => {
+    const docRef = db.collection(patientCollectionName).doc(sPatientName);
+
+    return db
+        .runTransaction(transaction => {
+            return transaction.get(docRef).then(doc => {
+                if (!doc.exists) {
+                  throw new Error('Doc does not exist!');
+                }
+          
+                const expiration = doc.data().expiration.toMillis();
+
+                if (expiration <= Date.now()) {
+                    transaction.update(docRef, { 
+                        healthData:  {}
+                    });
+                }
+            });
+        })
+        .then(() => {
+            return Promise.resolve();
+        })
+        .catch(error => {
+            return Promise.reject(error);
+        });
+}
 
 exports.getPatientData = getPatientData;
 exports.getSharings = getSharings;
