@@ -98,12 +98,14 @@ const updateExpiration = (sPatientName, iMillis) => {
 const updateHealthData = (sPatientName, oHealthData) => {
     deleteHealthDataIfExpired(sPatientName);
 
+    const key = Object.keys(oHealthData)[0];
+    const healthData = {}
+    healthData["healthData." + key] = oHealthData[key]
+
     return db
         .collection(patientCollectionName)
         .doc(sPatientName)
-        .update({
-            healthData: oHealthData
-        })
+        .update(healthData)
         .then(() => {
             return Promise.resolve();
         })
