@@ -45,7 +45,7 @@ const getSharings = sName => {
 };
 
 const deleteSharing = (sPatientName, sSharingId) => {
-    deleteHealthDataIfExpired(sName);
+    deleteHealthDataIfExpired(sPatientName);
 
     return db
         .collection(patientCollectionName)
@@ -62,7 +62,7 @@ const deleteSharing = (sPatientName, sSharingId) => {
 };
 
 const addSharing = (sPatientName, sSharingId) => {
-    deleteHealthDataIfExpired(sName);
+    deleteHealthDataIfExpired(sPatientName);
 
     return db
         .collection(patientCollectionName)
@@ -79,7 +79,7 @@ const addSharing = (sPatientName, sSharingId) => {
 };
 
 const updateExpiration = (sPatientName, iMillis) => {
-    deleteHealthDataIfExpired(sName);
+    deleteHealthDataIfExpired(sPatientName);
 
     return db
         .collection(patientCollectionName)
@@ -96,7 +96,7 @@ const updateExpiration = (sPatientName, iMillis) => {
 };
 
 const updateHealthData = (sPatientName, oHealthData) => {
-    deleteHealthDataIfExpired(sName);
+    deleteHealthDataIfExpired(sPatientName);
 
     return db
         .collection(patientCollectionName)
