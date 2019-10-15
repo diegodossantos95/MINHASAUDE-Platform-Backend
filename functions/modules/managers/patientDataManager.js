@@ -100,7 +100,7 @@ const updateHealthData = (sPatientName, oHealthData) => {
 
     const key = Object.keys(oHealthData)[0];
     const healthData = {}
-    healthData["healthData." + key] = oHealthData[key]
+    healthData[healthDataPropertyName + "." + key] = oHealthData[key]
 
     return db
         .collection(patientCollectionName)
