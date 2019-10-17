@@ -47,3 +47,10 @@ exports.deleteHealthData = (data, context) => {
 
     return patientDataManager.deleteHealthData(myUser);
 };
+
+//Read patient expiration time
+exports.getExpiration = (data, context) => {
+    const myUser = context.auth.token.email;
+
+    return patientDataManager.getExpiration(myUser);
+};

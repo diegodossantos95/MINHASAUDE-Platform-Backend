@@ -85,10 +85,31 @@ const updateExpiration = (sPatientName, iMillis) => {
         .collection(patientCollectionName)
         .doc(sPatientName)
         .update({
-            expiration: admin.firestore.Timestamp.fromMillis(iMillis)
+            expiration: iMillis
         })
         .then(() => {
             return Promise.resolve();
+        })
+        .catch(error => {
+            return Promise.reject(error);
+        });
+};
+
+const getExpiration = (sPatientName) => {
+    _deleteHealthDataIfExpired(sPatientName);
+
+    return db
+        .collection(patientCollectionName)
+        .doc(sPatientName)
+        .get()
+        .then(doc => {
+            if (!doc.exists) {
+              throw new Error('Doc does not exist!');
+            }
+      
+            const expiration = doc.data().expiration;
+
+            return Promise.resolve(expiration);
         })
         .catch(error => {
             return Promise.reject(error);
@@ -134,7 +155,7 @@ const _deleteHealthDataIfExpired = (sPatientName) => {
               throw new Error('Doc does not exist!');
             }
       
-            const expiration = doc.data().expiration.toMillis();
+            const expiration = doc.data().expiration;
 
             if (expiration <= Date.now()) {
                 return deleteHealthData(sPatientName);
@@ -152,5 +173,6 @@ exports.getSharings = getSharings;
 exports.deleteSharing = deleteSharing;
 exports.addSharing = addSharing;
 exports.updateExpiration = updateExpiration;
+exports.getExpiration = getExpiration;
 exports.updateHealthData = updateHealthData;
 exports.deleteHealthData = deleteHealthData;
