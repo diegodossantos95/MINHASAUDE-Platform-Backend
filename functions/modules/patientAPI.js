@@ -40,3 +40,10 @@ exports.updateHealthData = (data, context) => {
 
     return patientDataManager.updateHealthData(myUser, healthData);
 };
+
+//Delete health data
+exports.deleteHealthData = (data, context) => {
+    const myUser = context.auth.token.email;
+
+    return patientDataManager.deleteHealthData(myUser);
+};

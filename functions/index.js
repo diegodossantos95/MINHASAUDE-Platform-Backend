@@ -19,3 +19,4 @@ exports.deleteSharing = functions.https.onCall(patientAPI.deleteSharing);
 exports.addSharing = functions.https.onCall(patientAPI.addSharing);
 exports.updateExpiration = functions.https.onCall(patientAPI.updateExpiration);
 exports.updateHealthData = functions.https.onCall(patientAPI.updateHealthData);
+exports.deleteHealthData = functions.https.onCall(patientAPI.deleteHealthData);

@@ -9,7 +9,7 @@ const healthDataPropertyName = "healthData";
 const getPatientData = sName => {
     //TODO: Handle if the document doesnt exist
     
-    deleteHealthDataIfExpired(sName);
+    _deleteHealthDataIfExpired(sName);
 
     return db
         .collection(patientCollectionName)
@@ -28,7 +28,7 @@ const getPatientData = sName => {
 const getSharings = sName => {
     //TODO: Handle if the document doesnt exist
 
-    deleteHealthDataIfExpired(sName);
+    _deleteHealthDataIfExpired(sName);
 
     return db
         .collection(patientCollectionName)
@@ -45,7 +45,7 @@ const getSharings = sName => {
 };
 
 const deleteSharing = (sPatientName, sSharingId) => {
-    deleteHealthDataIfExpired(sPatientName);
+    _deleteHealthDataIfExpired(sPatientName);
 
     return db
         .collection(patientCollectionName)
@@ -62,7 +62,7 @@ const deleteSharing = (sPatientName, sSharingId) => {
 };
 
 const addSharing = (sPatientName, sSharingId) => {
-    deleteHealthDataIfExpired(sPatientName);
+    _deleteHealthDataIfExpired(sPatientName);
 
     return db
         .collection(patientCollectionName)
@@ -79,7 +79,7 @@ const addSharing = (sPatientName, sSharingId) => {
 };
 
 const updateExpiration = (sPatientName, iMillis) => {
-    deleteHealthDataIfExpired(sPatientName);
+    _deleteHealthDataIfExpired(sPatientName);
 
     return db
         .collection(patientCollectionName)
@@ -96,16 +96,26 @@ const updateExpiration = (sPatientName, iMillis) => {
 };
 
 const updateHealthData = (sPatientName, oHealthData) => {
-    deleteHealthDataIfExpired(sPatientName);
+    _deleteHealthDataIfExpired(sPatientName);
 
     const key = Object.keys(oHealthData)[0];
     const healthData = {}
     healthData[healthDataPropertyName + "." + key] = oHealthData[key]
 
+    return _updateHealthData(sPatientName, healthData);
+};
+
+const deleteHealthData = (sPatientName) => {
+    return _updateHealthData(sPatientName, {
+        healthData:  {}
+    });
+};
+
+const _updateHealthData = (sPatientName, oHealthData) => {
     return db
         .collection(patientCollectionName)
         .doc(sPatientName)
-        .update(healthData)
+        .update(oHealthData)
         .then(() => {
             return Promise.resolve();
         })
@@ -114,27 +124,23 @@ const updateHealthData = (sPatientName, oHealthData) => {
         });
 };
 
-const deleteHealthDataIfExpired = (sPatientName) => {
-    const docRef = db.collection(patientCollectionName).doc(sPatientName);
-
+const _deleteHealthDataIfExpired = (sPatientName) => {
     return db
-        .runTransaction(transaction => {
-            return transaction.get(docRef).then(doc => {
-                if (!doc.exists) {
-                  throw new Error('Doc does not exist!');
-                }
-          
-                const expiration = doc.data().expiration.toMillis();
+        .collection(patientCollectionName)
+        .doc(sPatientName)
+        .get()
+        .then(doc => {
+            if (!doc.exists) {
+              throw new Error('Doc does not exist!');
+            }
+      
+            const expiration = doc.data().expiration.toMillis();
 
-                if (expiration <= Date.now()) {
-                    transaction.update(docRef, { 
-                        healthData:  {}
-                    });
-                }
-            });
-        })
-        .then(() => {
-            return Promise.resolve();
+            if (expiration <= Date.now()) {
+                return deleteHealthData(sPatientName);
+            } else {
+                return Promise.resolve();
+            }
         })
         .catch(error => {
             return Promise.reject(error);
@@ -147,3 +153,4 @@ exports.deleteSharing = deleteSharing;
 exports.addSharing = addSharing;
 exports.updateExpiration = updateExpiration;
 exports.updateHealthData = updateHealthData;
+exports.deleteHealthData = deleteHealthData;
