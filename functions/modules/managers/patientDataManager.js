@@ -47,6 +47,8 @@ const getSharings = sName => {
 const deleteSharing = (sPatientName, sSharingId) => {
     _deleteHealthDataIfExpired(sPatientName);
 
+    //TODO: delete sharing from the physician
+
     return db
         .collection(patientCollectionName)
         .doc(sPatientName)
@@ -64,6 +66,8 @@ const deleteSharing = (sPatientName, sSharingId) => {
 const addSharing = (sPatientName, sSharingId) => {
     _deleteHealthDataIfExpired(sPatientName);
 
+    //TODO: add sharing to the physician
+
     return db
         .collection(patientCollectionName)
         .doc(sPatientName)
@@ -78,14 +82,14 @@ const addSharing = (sPatientName, sSharingId) => {
         });
 };
 
-const updateExpiration = (sPatientName, iMillis) => {
+const updateExpiration = (sPatientName, iDays) => {
     _deleteHealthDataIfExpired(sPatientName);
 
     return db
         .collection(patientCollectionName)
         .doc(sPatientName)
         .update({
-            expiration: iMillis
+            expiration: iDays
         })
         .then(() => {
             return Promise.resolve();
@@ -133,6 +137,9 @@ const deleteHealthData = (sPatientName) => {
 };
 
 const _updateHealthData = (sPatientName, oHealthData) => {
+    const currentDate = new Date();
+    oHealthData.syncDate = currentDate.getTime();
+
     return db
         .collection(patientCollectionName)
         .doc(sPatientName)
@@ -155,7 +162,10 @@ const _deleteHealthDataIfExpired = (sPatientName) => {
               throw new Error('Doc does not exist!');
             }
       
-            const expiration = doc.data().expiration;
+            const milliInDay = 24*60*60*1000;
+            const iDaysToExpire = doc.data().expiration;
+            const syncDate = doc.data().syncDate;
+            const expiration = syncDate + (iDaysToExpire * milliInDay);
 
             if (expiration <= Date.now()) {
                 return deleteHealthData(sPatientName);

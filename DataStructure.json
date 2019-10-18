@@ -3,7 +3,8 @@
         [
             {
                 "patient1-document": {
-                    "expiration": "Date",
+                    "expiration": 7,
+                    "syncDate": 312312312,
                     "healthData": {
                         "heartRate": []
                     },
