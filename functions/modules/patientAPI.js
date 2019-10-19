@@ -2,6 +2,13 @@
 
 const patientDataManager = require('./managers/patientDataManager');
 
+//Init patient data
+exports.initPatientDatabase = (data, context) => {
+    const myUser = context.auth.token.email;
+
+    return patientDataManager.initDatabase(myUser);
+};
+
 //Read patient sharings
 exports.getSharings = (data, context) => {
     const myUser = context.auth.token.email;

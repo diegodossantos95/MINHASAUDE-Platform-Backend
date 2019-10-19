@@ -7,6 +7,29 @@ const patientCollectionName = "patients";
 const sharingPropertyName = "sharings";
 const healthDataPropertyName = "healthData";
 
+const initDatabase = sPatientName => {
+    const docRef = db.collection(patientCollectionName).doc(sPatientName);
+
+    return docRef.get()
+        .then(doc => {
+            if (!doc.exists) {
+                const currrentDate = Date.now() / 1000;
+
+                return docRef.set({
+                        expiration: 1,
+                        healthData: {},
+                        sharings: [],
+                        syncDate: currrentDate
+                    }, { merge: true });
+            } else {
+                return Promise.resolve();
+            }
+        })
+        .catch(error => {
+            return Promise.reject(error);
+        });
+};
+
 const getPatientData = sName => {
     //TODO: Handle if the document doesnt exist
     
@@ -154,8 +177,7 @@ const deleteHealthData = (sPatientName) => {
 };
 
 const _updateHealthData = (sPatientName, oHealthData) => {
-    const currentDate = new Date();
-    oHealthData.syncDate = currentDate.getTime() / 1000;
+    oHealthData.syncDate = Date.now() / 1000;
 
     return db
         .collection(patientCollectionName)
@@ -196,6 +218,7 @@ const _deleteHealthDataIfExpired = (sPatientName) => {
         });
 }
 
+exports.initDatabase = initDatabase;
 exports.getPatientData = getPatientData;
 exports.getSharings = getSharings;
 exports.deleteSharing = deleteSharing;
