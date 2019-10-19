@@ -22,4 +22,9 @@ const getSharings = sName => {
         });
 };
 
+const getPhysicianDocRef = sName => {
+    return db.collection(physicianCollectionName).doc(sName);
+};
+
 exports.getSharings = getSharings;
+exports.getPhysicianDocRef = getPhysicianDocRef;

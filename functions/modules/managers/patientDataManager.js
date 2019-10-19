@@ -2,6 +2,7 @@
 
 const admin = require('firebase-admin');
 const db = admin.firestore();
+const physicianDataManager = require('./physicianDataManager');
 const patientCollectionName = "patients";
 const sharingPropertyName = "sharings";
 const healthDataPropertyName = "healthData";
@@ -47,14 +48,20 @@ const getSharings = sName => {
 const deleteSharing = (sPatientName, sSharingId) => {
     _deleteHealthDataIfExpired(sPatientName);
 
-    //TODO: delete sharing from the physician
+    var batch = db.batch();
+    var patientRef = db.collection(patientCollectionName).doc(sPatientName);
+    var physicianRef = physicianDataManager.getPhysicianDocRef(sSharingId);
+    
+    batch.update(patientRef, {
+        sharings: admin.firestore.FieldValue.arrayRemove(sSharingId)
+    });
 
-    return db
-        .collection(patientCollectionName)
-        .doc(sPatientName)
-        .update({
-            sharings: admin.firestore.FieldValue.arrayRemove(sSharingId)
-        })
+    batch.update(physicianRef, {
+        sharings: admin.firestore.FieldValue.arrayRemove(sPatientName)
+    });
+
+    return batch
+        .commit()
         .then(() => {
             return Promise.resolve();
         })
@@ -66,14 +73,20 @@ const deleteSharing = (sPatientName, sSharingId) => {
 const addSharing = (sPatientName, sSharingId) => {
     _deleteHealthDataIfExpired(sPatientName);
 
-    //TODO: add sharing to the physician
+    var batch = db.batch();
+    var patientRef = db.collection(patientCollectionName).doc(sPatientName);
+    var physicianRef = physicianDataManager.getPhysicianDocRef(sSharingId);
+    
+    batch.update(patientRef, {
+        sharings: admin.firestore.FieldValue.arrayUnion(sSharingId)
+    });
 
-    return db
-        .collection(patientCollectionName)
-        .doc(sPatientName)
-        .update({
-            sharings: admin.firestore.FieldValue.arrayUnion(sSharingId)
-        })
+    batch.update(physicianRef, {
+        sharings: admin.firestore.FieldValue.arrayUnion(sPatientName)
+    });
+
+    return batch
+        .commit()
         .then(() => {
             return Promise.resolve();
         })
@@ -99,7 +112,7 @@ const updateExpiration = (sPatientName, iDays) => {
         });
 };
 
-const getExpiration = (sPatientName) => {
+const getExpirationAndSyncTimes = (sPatientName) => {
     _deleteHealthDataIfExpired(sPatientName);
 
     return db
@@ -112,8 +125,12 @@ const getExpiration = (sPatientName) => {
             }
       
             const expiration = doc.data().expiration;
+            const sync = doc.data().syncDate;
 
-            return Promise.resolve(expiration);
+            return Promise.resolve({
+                expiration: expiration,
+                sync: sync
+            });
         })
         .catch(error => {
             return Promise.reject(error);
@@ -138,14 +155,14 @@ const deleteHealthData = (sPatientName) => {
 
 const _updateHealthData = (sPatientName, oHealthData) => {
     const currentDate = new Date();
-    oHealthData.syncDate = currentDate.getTime();
+    oHealthData.syncDate = currentDate.getTime() / 1000;
 
     return db
         .collection(patientCollectionName)
         .doc(sPatientName)
         .update(oHealthData)
         .then(() => {
-            return Promise.resolve();
+            return Promise.resolve(oHealthData.syncDate);
         })
         .catch(error => {
             return Promise.reject(error);
@@ -166,8 +183,9 @@ const _deleteHealthDataIfExpired = (sPatientName) => {
             const iDaysToExpire = doc.data().expiration;
             const syncDate = doc.data().syncDate;
             const expiration = syncDate + (iDaysToExpire * milliInDay);
+            const currentDate = Date.now() / 1000;
 
-            if (expiration <= Date.now()) {
+            if (expiration <= currentDate) {
                 return deleteHealthData(sPatientName);
             } else {
                 return Promise.resolve();
@@ -183,6 +201,6 @@ exports.getSharings = getSharings;
 exports.deleteSharing = deleteSharing;
 exports.addSharing = addSharing;
 exports.updateExpiration = updateExpiration;
-exports.getExpiration = getExpiration;
+exports.getExpirationAndSyncTimes = getExpirationAndSyncTimes;
 exports.updateHealthData = updateHealthData;
 exports.deleteHealthData = deleteHealthData;

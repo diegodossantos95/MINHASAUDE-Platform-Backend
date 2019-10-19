@@ -49,8 +49,8 @@ exports.deleteHealthData = (data, context) => {
 };
 
 //Read patient expiration time
-exports.getExpiration = (data, context) => {
+exports.getExpirationAndSyncTimes = (data, context) => {
     const myUser = context.auth.token.email;
 
-    return patientDataManager.getExpiration(myUser);
+    return patientDataManager.getExpirationAndSyncTimes(myUser);
 };
