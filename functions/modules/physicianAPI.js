@@ -17,6 +17,8 @@ app.use(authManager.check);
 app.get('/mySharings', (req, res) => {
     const myUser = req.user.email;
 
+    physicianDataManager.initDatabase(myUser);
+
     physicianDataManager.getSharings(myUser)
         .then( data => {
             res.json(data);
@@ -29,10 +31,13 @@ app.get('/mySharings', (req, res) => {
 
 // View patient data
 app.get('/patient/:patientId', (req, res) => {
+    const myUser = req.user.email;
     const patientId = req.params.patientId;
-    //TODO: Validate if  is shared with me
 
-    patientDataManager.getPatientData(patientId)
+    physicianDataManager.isShared(myUser, patientId)
+        .then(() => {
+            return patientDataManager.getPatientData(patientId);
+        })
         .then( data => {
             res.json(data);
             return;
