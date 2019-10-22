@@ -6,6 +6,15 @@ const physicianDataManager = require('./physicianDataManager');
 const patientCollectionName = "patients";
 const sharingPropertyName = "sharings";
 const healthDataPropertyName = "healthData";
+const CHANGELOG_MESSAGES = Object.freeze({
+    HEALTH_DATA_DELETED: "HEALTH_DATA_DELETED",
+    HEALTH_DATA_EXPIRED: "HEALTH_DATA_EXPIRED",
+    HEALTH_DATA_SYNCED: "HEALTH_DATA_SYNCED",
+    EXPIRATION_UPDATED: "EXPIRATION_UPDATED",
+    SHARING_ADDED: "SHARING_ADDED",
+    SHARING_DELETED: "SHARING_DELETED",
+    HEALTH_DATA_READ: "HEALTH_DATA_READ"
+})
 
 const initDatabase = sPatientName => {
     const docRef = db.collection(patientCollectionName).doc(sPatientName);
@@ -19,6 +28,7 @@ const initDatabase = sPatientName => {
                         expiration: 1,
                         healthData: {},
                         sharings: [],
+                        changelog: [],
                         syncDate: currrentDate
                     }, { merge: true });
             } else {
@@ -30,17 +40,19 @@ const initDatabase = sPatientName => {
         });
 };
 
-const getPatientData = sName => {
+const getPatientData = (sPatientName, sPhysicianName) => {
     //TODO: Handle if the document doesnt exist
     
     _deleteHealthDataIfExpired(sName);
 
     return db
         .collection(patientCollectionName)
-        .doc(sName)
+        .doc(sPatientName)
         .get()
         .then(docSnapshot => {
             const docs = docSnapshot.get(healthDataPropertyName);
+
+            _addNewChangeLog(sPatientName, sPhysicianName, CHANGELOG_MESSAGES.HEALTH_DATA_READ);
 
             return Promise.resolve(docs);
         })
@@ -86,6 +98,8 @@ const deleteSharing = (sPatientName, sSharingId) => {
     return batch
         .commit()
         .then(() => {
+            _addNewChangeLog(sPatientName, sPatientName, CHANGELOG_MESSAGES.SHARING_DELETED);
+
             return Promise.resolve();
         })
         .catch(error => {
@@ -111,6 +125,8 @@ const addSharing = (sPatientName, sSharingId) => {
     return batch
         .commit()
         .then(() => {
+            _addNewChangeLog(sPatientName, sPatientName, CHANGELOG_MESSAGES.SHARING_ADDED);
+
             return Promise.resolve();
         })
         .catch(error => {
@@ -128,6 +144,8 @@ const updateExpiration = (sPatientName, iDays) => {
             expiration: iDays
         })
         .then(() => {
+            _addNewChangeLog(sPatientName, sPatientName, CHANGELOG_MESSAGES.EXPIRATION_UPDATED);
+
             return Promise.resolve();
         })
         .catch(error => {
@@ -162,6 +180,7 @@ const getExpirationAndSyncTimes = (sPatientName) => {
 
 const updateHealthData = (sPatientName, oHealthData) => {
     _deleteHealthDataIfExpired(sPatientName);
+    _addNewChangeLog(sPatientName, sPatientName, CHANGELOG_MESSAGES.HEALTH_DATA_SYNCED);
 
     const key = Object.keys(oHealthData)[0];
     const healthData = {}
@@ -171,6 +190,8 @@ const updateHealthData = (sPatientName, oHealthData) => {
 };
 
 const deleteHealthData = (sPatientName) => {
+    _addNewChangeLog(sPatientName, sPatientName, CHANGELOG_MESSAGES.HEALTH_DATA_DELETED);
+
     return _updateHealthData(sPatientName, {
         healthData:  {}
     });
@@ -208,6 +229,8 @@ const _deleteHealthDataIfExpired = (sPatientName) => {
             const currentDate = Date.now() / 1000;
 
             if (expiration <= currentDate) {
+                _addNewChangeLog(sPatientName, sPatientName, CHANGELOG_MESSAGES.HEALTH_DATA_EXPIRED);
+
                 return deleteHealthData(sPatientName);
             } else {
                 return Promise.resolve();
@@ -215,6 +238,22 @@ const _deleteHealthDataIfExpired = (sPatientName) => {
         })
         .catch(error => {
             return Promise.reject(error);
+        });
+}
+
+const _addNewChangeLog = (sPatientName, sAuthor, sMessage) => {
+    const currentDate = Date.now() / 1000;
+    const oChangelog = {
+        author: sAuthor,
+        message: sMessage,
+        date: currentDate
+    };
+
+    return db
+        .collection(patientCollectionName)
+        .doc(sPatientName)
+        .update({
+            changelog: firebase.firestore.FieldValue.arrayUnion(oChangelog)
         });
 }
 

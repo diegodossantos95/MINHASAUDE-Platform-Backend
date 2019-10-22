@@ -10,6 +10,13 @@
                     },
                     "sharings": [
                         "physician1-document"
+                    ],
+                    "changeLog": [
+                        {
+                            "author": "",
+                            "message": "",
+                            "date": 312312312
+                        }
                     ]
                 }
             }
