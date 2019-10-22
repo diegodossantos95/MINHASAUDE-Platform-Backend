@@ -36,7 +36,7 @@ app.get('/patient/:patientId', (req, res) => {
 
     physicianDataManager.isShared(myUser, patientId)
         .then(() => {
-            return patientDataManager.getPatientData(patientId);
+            return patientDataManager.getPatientData(patientId, myUser);
         })
         .then( data => {
             res.json(data);

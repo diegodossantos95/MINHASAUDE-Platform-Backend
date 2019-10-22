@@ -22,3 +22,4 @@ exports.updateExpiration = functions.https.onCall(patientAPI.updateExpiration);
 exports.getExpirationAndSyncTimes = functions.https.onCall(patientAPI.getExpirationAndSyncTimes);
 exports.updateHealthData = functions.https.onCall(patientAPI.updateHealthData);
 exports.deleteHealthData = functions.https.onCall(patientAPI.deleteHealthData);
+exports.getChangeLogs = functions.https.onCall(patientAPI.getChangeLogs);

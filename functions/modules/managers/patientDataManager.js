@@ -5,6 +5,7 @@ const db = admin.firestore();
 const physicianDataManager = require('./physicianDataManager');
 const patientCollectionName = "patients";
 const sharingPropertyName = "sharings";
+const changeLogsPropertyName = "changelogs";
 const healthDataPropertyName = "healthData";
 const CHANGELOG_MESSAGES = Object.freeze({
     HEALTH_DATA_DELETED: "HEALTH_DATA_DELETED",
@@ -28,7 +29,7 @@ const initDatabase = sPatientName => {
                         expiration: 1,
                         healthData: {},
                         sharings: [],
-                        changelog: [],
+                        changelogs: [],
                         syncDate: currrentDate
                     }, { merge: true });
             } else {
@@ -43,7 +44,7 @@ const initDatabase = sPatientName => {
 const getPatientData = (sPatientName, sPhysicianName) => {
     //TODO: Handle if the document doesnt exist
     
-    _deleteHealthDataIfExpired(sName);
+    _deleteHealthDataIfExpired(sPatientName);
 
     return db
         .collection(patientCollectionName)
@@ -197,6 +198,25 @@ const deleteHealthData = (sPatientName) => {
     });
 };
 
+const getChangeLogs = sName => {
+    //TODO: Handle if the document doesnt exist
+
+    _deleteHealthDataIfExpired(sName);
+
+    return db
+        .collection(patientCollectionName)
+        .doc(sName)
+        .get()
+        .then(docSnapshot => {
+            const changeLogs = docSnapshot.get(changeLogsPropertyName);
+
+            return Promise.resolve(changeLogs);
+        })
+        .catch(error => {
+            return Promise.reject(error);
+        });
+};
+
 const _updateHealthData = (sPatientName, oHealthData) => {
     oHealthData.syncDate = Date.now() / 1000;
 
@@ -253,7 +273,7 @@ const _addNewChangeLog = (sPatientName, sAuthor, sMessage) => {
         .collection(patientCollectionName)
         .doc(sPatientName)
         .update({
-            changelog: admin.firestore.FieldValue.arrayUnion(oChangelog)
+            changelogs: admin.firestore.FieldValue.arrayUnion(oChangelog)
         });
 }
 
@@ -266,3 +286,4 @@ exports.updateExpiration = updateExpiration;
 exports.getExpirationAndSyncTimes = getExpirationAndSyncTimes;
 exports.updateHealthData = updateHealthData;
 exports.deleteHealthData = deleteHealthData;
+exports.getChangeLogs = getChangeLogs;

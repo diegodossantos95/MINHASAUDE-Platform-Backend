@@ -61,3 +61,10 @@ exports.getExpirationAndSyncTimes = (data, context) => {
 
     return patientDataManager.getExpirationAndSyncTimes(myUser);
 };
+
+//Read patient changelogs
+exports.getChangeLogs = (data, context) => {
+    const myUser = context.auth.token.email;
+
+    return patientDataManager.getChangeLogs(myUser);
+};
