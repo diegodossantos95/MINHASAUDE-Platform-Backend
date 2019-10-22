@@ -253,7 +253,7 @@ const _addNewChangeLog = (sPatientName, sAuthor, sMessage) => {
         .collection(patientCollectionName)
         .doc(sPatientName)
         .update({
-            changelog: firebase.firestore.FieldValue.arrayUnion(oChangelog)
+            changelog: admin.firestore.FieldValue.arrayUnion(oChangelog)
         });
 }
 
