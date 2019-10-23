@@ -9,7 +9,12 @@
                         "heartRate": []
                     },
                     "sharings": [
-                        "physician1-document"
+                        {
+                            "name": "physician1-document",
+                            "access": [
+                                "healthData1"
+                            ]
+                        }
                     ],
                     "changelogs": [
                         {

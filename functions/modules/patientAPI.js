@@ -27,9 +27,9 @@ exports.deleteSharing = (data, context) => {
 //Add new share
 exports.addSharing = (data, context) => {
     const myUser = context.auth.token.email;
-    const sharingId = data.sharingId;
+    const sharing = data.sharing;
 
-    return patientDataManager.addSharing(myUser, sharingId);
+    return patientDataManager.addSharing(myUser, sharing);
 };
 
 //Update expiration

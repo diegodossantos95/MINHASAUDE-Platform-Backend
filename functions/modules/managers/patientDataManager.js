@@ -51,11 +51,19 @@ const getPatientData = (sPatientName, sPhysicianName) => {
         .doc(sPatientName)
         .get()
         .then(docSnapshot => {
-            const docs = docSnapshot.get(healthDataPropertyName);
+            var oFilteredData = {};
+            const oHealthData = docSnapshot.get(healthDataPropertyName);
+            const oSharing = docSnapshot.get(sharingPropertyName).find(element => {
+                return element.name === sPhysicianName;
+            });
+            
+            oSharing.access.forEach(value => {
+                oFilteredData[value] = oHealthData[value];
+            });
 
             _addNewChangeLog(sPatientName, sPhysicianName, CHANGELOG_MESSAGES.HEALTH_DATA_READ);
 
-            return Promise.resolve(docs);
+            return Promise.resolve(oFilteredData);
         })
         .catch(error => {
             return Promise.reject(error);
@@ -108,15 +116,16 @@ const deleteSharing = (sPatientName, sSharingId) => {
         });
 };
 
-const addSharing = (sPatientName, sSharingId) => {
+const addSharing = (sPatientName, oSharing) => {
     _deleteHealthDataIfExpired(sPatientName);
 
     var batch = db.batch();
     var patientRef = db.collection(patientCollectionName).doc(sPatientName);
+    var sSharingId = oSharing.name;
     var physicianRef = physicianDataManager.getPhysicianDocRef(sSharingId);
     
     batch.update(patientRef, {
-        sharings: admin.firestore.FieldValue.arrayUnion(sSharingId)
+        sharings: admin.firestore.FieldValue.arrayUnion(oSharing)
     });
 
     batch.update(physicianRef, {
