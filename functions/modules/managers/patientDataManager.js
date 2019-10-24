@@ -96,16 +96,26 @@ const deleteSharing = (sPatientName, sSharingId) => {
     var patientRef = db.collection(patientCollectionName).doc(sPatientName);
     var physicianRef = physicianDataManager.getPhysicianDocRef(sSharingId);
     
-    batch.update(patientRef, {
-        sharings: admin.firestore.FieldValue.arrayRemove(sSharingId)
-    });
+    return patientRef
+        .get()
+        .then(docSnapshot => {
+            const oSharing = docSnapshot.get(sharingPropertyName).find(element => {
+                return element.name === sSharingId;
+            });
 
-    batch.update(physicianRef, {
-        sharings: admin.firestore.FieldValue.arrayRemove(sPatientName)
-    });
-
-    return batch
-        .commit()
+            return oSharing;
+        })
+        .then(sharing => {
+            batch.update(patientRef, {
+                sharings: admin.firestore.FieldValue.arrayRemove(sharing)
+            });
+        
+            batch.update(physicianRef, {
+                sharings: admin.firestore.FieldValue.arrayRemove(sPatientName)
+            });
+        
+            return batch.commit();
+        })
         .then(() => {
             _addNewChangeLog(sPatientName, sPatientName, CHANGELOG_MESSAGES.SHARING_DELETED);
 
