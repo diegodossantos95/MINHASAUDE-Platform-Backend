@@ -15,7 +15,7 @@
         <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
         <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
           <boolProp name="LoopController.continue_forever">false</boolProp>
-          <stringProp name="LoopController.loops">1</stringProp>
+          <stringProp name="LoopController.loops">10</stringProp>
         </elementProp>
         <stringProp name="ThreadGroup.num_threads">10</stringProp>
         <stringProp name="ThreadGroup.ramp_time">1</stringProp>
@@ -28,7 +28,7 @@
           <collectionProp name="HeaderManager.headers">
             <elementProp name="" elementType="Header">
               <stringProp name="Header.name">Authorization</stringProp>
-              <stringProp name="Header.value">Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6ImEwYjQwY2NjYmQ0OWQxNmVkMjg2MGRiNzIyNmQ3NDZiNmZhZmRmYzAiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vbWV1bnV0cmktMjAxOSIsImF1ZCI6Im1ldW51dHJpLTIwMTkiLCJhdXRoX3RpbWUiOjE1NzE5NjE2OTYsInVzZXJfaWQiOiJzaEhyYllSWWZPZEVRZUU4NGY5dDZQbVV5dDAzIiwic3ViIjoic2hIcmJZUllmT2RFUWVFODRmOXQ2UG1VeXQwMyIsImlhdCI6MTU3MTk2MTY5NiwiZXhwIjoxNTcxOTY1Mjk2LCJlbWFpbCI6InNhbnRvcy5kaWVnb2RAZ21haWwuY29tIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsImZpcmViYXNlIjp7ImlkZW50aXRpZXMiOnsiZW1haWwiOlsic2FudG9zLmRpZWdvZEBnbWFpbC5jb20iXX0sInNpZ25faW5fcHJvdmlkZXIiOiJwYXNzd29yZCJ9fQ.E3Dqfcpa2yKDXLsMKouxdFGiIY7QbBAvP4w6umztONXSYXkSHVcfSRZzJeK5mi0E6VTJkscz7aLPn-1VtLZ1Oph21dxbEkEbGmvix4CBAxUmXOmjzwDdVu6WcmMFKvnPGGTYOuqk2Q2RVRQ8ENII1cAhtGRzHNft8mEqmCbxp94AD3Kw0L6kqDTn8u6PSEGQAngK-l0XaDJE0JIgtMONTjGVaip2jBtNVjpkhLkMktywOQqgFglaq_Z6RtO00skbIoqGFX9akv3ei_Blkk3bVWjDnP0nKR2Hu2dbyFD3zGJeshJo46xMS0jAqR3iqSY9nDyN3vcS_soJsYqUUIQoUw</stringProp>
+              <stringProp name="Header.value">Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6ImEwYjQwY2NjYmQ0OWQxNmVkMjg2MGRiNzIyNmQ3NDZiNmZhZmRmYzAiLCJ0eXAiOiJKV1QifQ.eyJuYW1lIjoiRGllZ28gRG9zIFNhbnRvcyIsImlzcyI6Imh0dHBzOi8vc2VjdXJldG9rZW4uZ29vZ2xlLmNvbS9tZXVudXRyaS0yMDE5IiwiYXVkIjoibWV1bnV0cmktMjAxOSIsImF1dGhfdGltZSI6MTU3MjEwMDc3MywidXNlcl9pZCI6ImVMTURvRzR1MmZTa0dHTkV0MGRKN1hkRmlTbTEiLCJzdWIiOiJlTE1Eb0c0dTJmU2tHR05FdDBkSjdYZEZpU20xIiwiaWF0IjoxNTcyMTAwNzczLCJleHAiOjE1NzIxMDQzNzMsImVtYWlsIjoiZGllZ29AZGllZ28uY29tIiwiZW1haWxfdmVyaWZpZWQiOmZhbHNlLCJmaXJlYmFzZSI6eyJpZGVudGl0aWVzIjp7ImVtYWlsIjpbImRpZWdvQGRpZWdvLmNvbSJdfSwic2lnbl9pbl9wcm92aWRlciI6InBhc3N3b3JkIn19.U7jie8Ysr_0AUxv9DMk-H2rTqLki1eUuCdySAD848PPNhY2iGLwm5EIfT1rF4EIvFa3fni0DvaAKwSnwOAlDMq9e04SeKvth-ELijILJ1BtmqfikPDV21eu3O1DySXEDM-aKuWjd48h7Vrr_uPYg7rzSiElC45OzOflO4gDgFeRKshcmglkW1B1gGQel9YDksTN-7NogRpa0GIP2z7iO9EtAWwy4wgXeVIjCGnHEND8HKfDP_l3z5TdTncXiZeVU3krRBRfPhIWMb5lUC8E-Wm9Gt3AI8ZSL_JN5PslMxMyeY1EyLxDue4pm73s34CY9kOtWBehEShHkOharKpM6aQ</stringProp>
             </elementProp>
           </collectionProp>
         </HeaderManager>
@@ -133,7 +133,7 @@
                 <connectTime>true</connectTime>
               </value>
             </objProp>
-            <stringProp name="filename">C:\Users\Administrador\Desktop\results.csv</stringProp>
+            <stringProp name="filename">C:\Users\Administrador\Desktop\resultsTree-mysharings.csv</stringProp>
           </ResultCollector>
           <hashTree/>
           <ResultCollector guiclass="SummaryReport" testclass="ResultCollector" testname="Summary Report" enabled="true">
@@ -170,7 +170,7 @@
                 <connectTime>true</connectTime>
               </value>
             </objProp>
-            <stringProp name="filename">C:\Users\Administrador\Desktop\summary.csv</stringProp>
+            <stringProp name="filename"></stringProp>
           </ResultCollector>
           <hashTree/>
           <ResultCollector guiclass="GraphVisualizer" testclass="ResultCollector" testname="Graph Results" enabled="false">
@@ -216,7 +216,7 @@
         <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
         <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
           <boolProp name="LoopController.continue_forever">false</boolProp>
-          <stringProp name="LoopController.loops">1</stringProp>
+          <stringProp name="LoopController.loops">10</stringProp>
         </elementProp>
         <stringProp name="ThreadGroup.num_threads">10</stringProp>
         <stringProp name="ThreadGroup.ramp_time">1</stringProp>
@@ -229,7 +229,7 @@
           <collectionProp name="HeaderManager.headers">
             <elementProp name="" elementType="Header">
               <stringProp name="Header.name">Authorization</stringProp>
-              <stringProp name="Header.value">Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6ImEwYjQwY2NjYmQ0OWQxNmVkMjg2MGRiNzIyNmQ3NDZiNmZhZmRmYzAiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vbWV1bnV0cmktMjAxOSIsImF1ZCI6Im1ldW51dHJpLTIwMTkiLCJhdXRoX3RpbWUiOjE1NzE5NjE2OTYsInVzZXJfaWQiOiJzaEhyYllSWWZPZEVRZUU4NGY5dDZQbVV5dDAzIiwic3ViIjoic2hIcmJZUllmT2RFUWVFODRmOXQ2UG1VeXQwMyIsImlhdCI6MTU3MTk2MTY5NiwiZXhwIjoxNTcxOTY1Mjk2LCJlbWFpbCI6InNhbnRvcy5kaWVnb2RAZ21haWwuY29tIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsImZpcmViYXNlIjp7ImlkZW50aXRpZXMiOnsiZW1haWwiOlsic2FudG9zLmRpZWdvZEBnbWFpbC5jb20iXX0sInNpZ25faW5fcHJvdmlkZXIiOiJwYXNzd29yZCJ9fQ.E3Dqfcpa2yKDXLsMKouxdFGiIY7QbBAvP4w6umztONXSYXkSHVcfSRZzJeK5mi0E6VTJkscz7aLPn-1VtLZ1Oph21dxbEkEbGmvix4CBAxUmXOmjzwDdVu6WcmMFKvnPGGTYOuqk2Q2RVRQ8ENII1cAhtGRzHNft8mEqmCbxp94AD3Kw0L6kqDTn8u6PSEGQAngK-l0XaDJE0JIgtMONTjGVaip2jBtNVjpkhLkMktywOQqgFglaq_Z6RtO00skbIoqGFX9akv3ei_Blkk3bVWjDnP0nKR2Hu2dbyFD3zGJeshJo46xMS0jAqR3iqSY9nDyN3vcS_soJsYqUUIQoUw</stringProp>
+              <stringProp name="Header.value">Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6ImEwYjQwY2NjYmQ0OWQxNmVkMjg2MGRiNzIyNmQ3NDZiNmZhZmRmYzAiLCJ0eXAiOiJKV1QifQ.eyJuYW1lIjoiRGllZ28gRG9zIFNhbnRvcyIsImlzcyI6Imh0dHBzOi8vc2VjdXJldG9rZW4uZ29vZ2xlLmNvbS9tZXVudXRyaS0yMDE5IiwiYXVkIjoibWV1bnV0cmktMjAxOSIsImF1dGhfdGltZSI6MTU3MjEwMDc3MywidXNlcl9pZCI6ImVMTURvRzR1MmZTa0dHTkV0MGRKN1hkRmlTbTEiLCJzdWIiOiJlTE1Eb0c0dTJmU2tHR05FdDBkSjdYZEZpU20xIiwiaWF0IjoxNTcyMTAwNzczLCJleHAiOjE1NzIxMDQzNzMsImVtYWlsIjoiZGllZ29AZGllZ28uY29tIiwiZW1haWxfdmVyaWZpZWQiOmZhbHNlLCJmaXJlYmFzZSI6eyJpZGVudGl0aWVzIjp7ImVtYWlsIjpbImRpZWdvQGRpZWdvLmNvbSJdfSwic2lnbl9pbl9wcm92aWRlciI6InBhc3N3b3JkIn19.U7jie8Ysr_0AUxv9DMk-H2rTqLki1eUuCdySAD848PPNhY2iGLwm5EIfT1rF4EIvFa3fni0DvaAKwSnwOAlDMq9e04SeKvth-ELijILJ1BtmqfikPDV21eu3O1DySXEDM-aKuWjd48h7Vrr_uPYg7rzSiElC45OzOflO4gDgFeRKshcmglkW1B1gGQel9YDksTN-7NogRpa0GIP2z7iO9EtAWwy4wgXeVIjCGnHEND8HKfDP_l3z5TdTncXiZeVU3krRBRfPhIWMb5lUC8E-Wm9Gt3AI8ZSL_JN5PslMxMyeY1EyLxDue4pm73s34CY9kOtWBehEShHkOharKpM6aQ</stringProp>
             </elementProp>
           </collectionProp>
         </HeaderManager>
@@ -334,7 +334,7 @@
                 <connectTime>true</connectTime>
               </value>
             </objProp>
-            <stringProp name="filename">C:\Users\Administrador\Desktop\results.csv</stringProp>
+            <stringProp name="filename">C:\Users\Administrador\Desktop\resultsTree-patientData.csv</stringProp>
           </ResultCollector>
           <hashTree/>
           <ResultCollector guiclass="SummaryReport" testclass="ResultCollector" testname="Summary Report" enabled="true">
@@ -371,7 +371,7 @@
                 <connectTime>true</connectTime>
               </value>
             </objProp>
-            <stringProp name="filename">C:\Users\Administrador\Desktop\summary.csv</stringProp>
+            <stringProp name="filename"></stringProp>
           </ResultCollector>
           <hashTree/>
           <ResultCollector guiclass="GraphVisualizer" testclass="ResultCollector" testname="Graph Results" enabled="false">
