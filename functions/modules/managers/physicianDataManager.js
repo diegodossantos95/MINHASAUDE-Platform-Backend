@@ -23,15 +23,13 @@ const initDatabase = sName => {
         });
 };
 
-const getSharings = sName => {
-    //TODO: Handle if the document doesnt exist
-    
+const getSharings = sName => {  
     return db
         .collection(physicianCollectionName)
         .doc(sName)
         .get()
         .then(docSnapshot => {
-            const sharings = docSnapshot.get(sharingPropertyName);
+            const sharings = docSnapshot.get(sharingPropertyName) || [];
 
             return Promise.resolve(sharings);
         })
